@@ -32,8 +32,7 @@ else:
     if (Z1_verisi == titletext):
         print('Değişiklik yoktur')
     else:
-        sayfa.append({'A': titletext})
-        sayfa.append({'K': datetime.datetime.now()})
+        sayfa.append({'A': titletext, 'K': datetime.datetime.now()})
 
     sayfa['Z1'] = str(titletext)
     print(str(titletext))
