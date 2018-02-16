@@ -2,6 +2,7 @@ import urllib.request
 import bs4 as bs
 import datetime
 import openpyxl
+import difflib
 from openpyxl import Workbook
 
 sauce = urllib.request.urlopen('https://www.instagram.com/tlgkyck').read()
@@ -22,7 +23,14 @@ except IOError as e: #kayıtlı data yoksa oluştur
 A1_verisi = sayfa['A1'].value #başlangıç verisi
 Z1_verisi = sayfa['Z1'].value #son veri yedeği
 
-if (A1_verisi == None or Z1_verisi == None): #sütunlar boşsa verileri ekle
+text1_lines=titletext.splitlines()
+text2_lines=Z1_verisi.splitlines()
+
+d = difflib.Differ()
+diff = d.compare(text1_lines, text2_lines)
+print('\n'.join(diff))
+
+if (A1_verisi == None or Z1_verisi == None): #sütunlar boşsa başlangıç verilerini ekle
     sayfa['A1'] = sayfa['Z1'] = str(titletext)
     sayfa['K1'] = datetime.datetime.now()
     print("Profil ismi işlenmiştir:")
