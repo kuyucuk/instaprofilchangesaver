@@ -1,7 +1,6 @@
 import urllib.request
 import bs4 as bs
 import datetime
-import difflib
 import openpyxl
 from openpyxl import Workbook
 
@@ -25,6 +24,7 @@ Z1_verisi = sayfa['Z1'].value #son veri yedeği
 
 if (A1_verisi == None or Z1_verisi == None): #sütunlar boşsa verileri ekle
     sayfa['A1'] = sayfa['Z1'] = str(titletext)
+    sayfa['K1'] = datetime.datetime.now()
     print("Profil ismi işlenmiştir:")
     print(titletext)
 
@@ -32,7 +32,8 @@ else:
     if (Z1_verisi == titletext):
         print('Değişiklik yoktur')
     else:
-        sayfa.append([titletext])
+        sayfa.append({'A': titletext})
+        sayfa.append({'K': datetime.datetime.now()})
 
     sayfa['Z1'] = str(titletext)
     print(str(titletext))
