@@ -37,22 +37,13 @@ try:
 
         sayfa['P1'] = str(h1text)
         print(str(h1text))
-
-except:
+except IOError as e:
     print("Kayıt datanız oluşturuldu, lütfen tekrar derleyiniz")
     kitap = Workbook()
     sayfa = kitap.active
     kitap.save("insta.xlsx")
-    raise
-
-
-
-
-
-
-
-
-
+except ValueError:
+    print("h")
 
 
 
