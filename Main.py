@@ -12,30 +12,26 @@ soup = bs.BeautifulSoup(sauce,'lxml')
 h1data=soup.title
 h1text=h1data.text
 
-try:
+try: #kayıtlı data varsa çek
     kitap = openpyxl.load_workbook('insta.xlsx')
-    sayfa = kitap.get_sheet_by_name('Sheet')
+    sayfa = kitap.worksheets[0]
 
-except IOError as e:
+except IOError as e: #kayıtlı data yoksa oluştur
     kitap = Workbook()
     sayfa = kitap.active
     kitap.save("insta.xlsx")
-except ValueError:
-    print
 
 A1_verisi = sayfa['A1'].value
 P1_verisi = sayfa['P1'].value
 
-if (A1_verisi == None or P1_verisi == None):
+if (A1_verisi == None or P1_verisi == None): #sütunlar boşsa verileri ekle
     sayfa['A1'] = sayfa['P1'] = str(h1text)
     print("Profil ismi işlenmiştir:")
     print(h1text)
 
 else:
-    cell = sayfa['P1'].value
-    print(cell)
 
-    if (cell == h1text):
+    if (P1_verisi == h1text):
         print('Değişiklik yoktur')
     else:
         sayfa.append([h1text])
