@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: cp1254 -*-
+
 import urllib.request
 import bs4 as bs
 import datetime
@@ -12,17 +15,17 @@ soup = bs.BeautifulSoup(sauce,'lxml')
 titledata=soup.title
 titletext=titledata.text
 
-try: #kayÄ±tlÄ± data varsa Ã§ek
+try: #kayıtlı data varsa çek
     kitap = openpyxl.load_workbook('insta.xlsx')
     sayfa = kitap.worksheets[0]
 
-except IOError as e: #kayÄ±tlÄ± data yoksa oluÅŸtur
+except IOError as e: #kayıtlı data yoksa oluştur
     kitap = Workbook()
     sayfa = kitap.active
     kitap.save("insta.xlsx")
 
-A1_verisi = sayfa['A1'].value #baÅŸlangÄ±Ã§ verisi
-Z1_verisi = sayfa['Z1'].value #son veri yedeÄŸi
+A1_verisi = sayfa['A1'].value #başlangıç verisi
+Z1_verisi = sayfa['Z1'].value #son veri yedeği
 
 text1_lines=titletext.splitlines()
 text2_lines=Z1_verisi.splitlines()
@@ -31,15 +34,15 @@ d = difflib.Differ()
 diff = d.compare(text1_lines, text2_lines)
 print('\n'.join(diff))
 
-if (A1_verisi == None or Z1_verisi == None): #sÃ¼tunlar boÅŸsa baÅŸlangÄ±Ã§ verilerini ekle
+if (A1_verisi == None or Z1_verisi == None): #sütunlar boşsa başlangıç verilerini ekle
     sayfa['A1'] = sayfa['Z1'] = str(titletext)
     sayfa['K1'] = datetime.datetime.now()
-    print("Profil ismi iÅŸlenmiÅŸtir:")
+    print("Profil ismi işlenmiştir:")
     print(titletext)
 
 else:
     if (Z1_verisi == titletext):
-        print('DeÄŸiÅŸiklik yoktur')
+        print('Değişiklik yoktur')
     else:
         sayfa.append({'A': titletext, 'K': datetime.datetime.now()})
 
@@ -52,12 +55,12 @@ kitap.close()
 #####################################################################################
 
 # Hesap bilgilerimiz
-kullanÄ±cÄ± = "usertolga@gmail.com"
-kullanÄ±cÄ±_sifresi = 'gmailsifresi'
+kullanıcı = "usertolga@gmail.com"
+kullanıcı_sifresi = 'gmailsifresi'
 
-alÄ±cÄ± = 'tolga_k94@hotmail.com'  # alÄ±cÄ±nÄ±n mail adresi
+alıcı = 'tolga_k94@hotmail.com'  # alıcının mail adresi
 konu = 'Selam'
-msj = titletext.encode('utf-8')
+msj = str("Güncel title verisi %s" %(titletext.encode('utf-8'))).encode('utf-8')
 
 # bilgileri bir metinde derledik
 email_text = """
@@ -65,20 +68,20 @@ From: {}
 To: {}
 Subject: {}
 {}
-""".format(kullanÄ±cÄ±, alÄ±cÄ±, konu, msj)
+""".format(kullanıcı, alıcı, konu, msj)
 
 try:
-    server = smtplib.SMTP('smtp.gmail.com:587')  # servere baÄŸlanmak iÃ§in gerekli host ve portu belirttik
+    server = smtplib.SMTP('smtp.gmail.com:587')  # servere bağlanmak için gerekli host ve portu belirttik
 
-    server.starttls()  # serveri TLS(bÃ¼tÃ¼n baÄŸlantÄ± ÅŸifreli olucak bilgiler korunucak) baÄŸlantÄ±sÄ± ile baÅŸlattÄ±k
+    server.starttls()  # serveri TLS(bütün bağlantı şifreli olucak bilgiler korunucak) bağlantısı ile başlattık
 
-    server.login(kullanÄ±cÄ±, kullanÄ±cÄ±_sifresi)  # Gmail SMTP server'Ä±na giriÅŸ yaptÄ±k
+    server.login(kullanıcı, kullanıcı_sifresi)  # Gmail SMTP server'ına giriş yaptık
 
-    server.sendmail(kullanÄ±cÄ±, alÄ±cÄ±, email_text)  # Mail'imizi gÃ¶nderdik
+    server.sendmail(kullanıcı, alıcı, email_text)  # Mail'imizi gönderdik
 
-    server.close()  # SMTP serverimizi kapattÄ±k
+    server.close()  # SMTP serverimizi kapattık
 
-    print('email gÃ¶nderildi')
+    print('email gönderildi')
 
 except:
-    print("bir hata oluÅŸtu")
+    print("bir hata oluştu")
