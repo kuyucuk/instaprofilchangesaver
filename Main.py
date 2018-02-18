@@ -52,10 +52,10 @@ kitap.close()
 #####################################################################################
 
 # Hesap bilgilerimiz
-kullanıcı = "mail@gmail.com"
-kullanıcı_sifresi = 'şifre'
+kullanıcı = "usertolga@gmail.com"
+kullanıcı_sifresi = 'gmailsifresi'
 
-alıcı = 'mail'  # alıcının mail adresi
+alıcı = 'tolga_k94@hotmail.com'  # alıcının mail adresi
 konu = 'Selam'
 msj = titletext.encode('utf-8')
 
