@@ -37,7 +37,6 @@ except:
     print("Bu URL, girilen datalara ulaşılmasına izin vermiyor.")
 
 
-
 if (kaynak == 1):
     data = titletext
     dataAdi = "title"
