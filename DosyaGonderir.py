@@ -19,13 +19,13 @@ file = "insta.xlsx"
 
 def mailGonder (text):
     try:
-        recipients = ['tolga_k94@hotmail.com']  # değişim varsa mail gönder
+        recipients = ['mail@alperozturk.com']  # değişim varsa mail gönder
         emaillist = [elem.strip().split(',') for elem in recipients]
 
         msg = MIMEMultipart()
         msg['Subject'] = str(file)
         msg['From'] = 'usertolga@gmail.com'
-        msg['Reply-to'] = 'tolga_k94@hotmail.com'
+        msg['Reply-to'] = 'mail@alperozturk.com'
         msg.preamble = 'Multipart massage.\n'
 
         part = MIMEText(text)
