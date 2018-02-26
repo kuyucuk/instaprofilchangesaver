@@ -20,14 +20,14 @@
             <div class="input text">
                 {{ form.name.label }} {{ form.name }}
             </div>
-			<div class="input text">
+			<div class="input email">
                 {{ form.mail.label }} {{ form.mail }}
             </div>
 			<div>
-			<input type="checkbox" name="box1title" checked="checked" value="secim1" title="Seç Birini" />Title <br/>
-			<input type="checkbox" name="boxh1" />h1 <br />
-			<input type="checkbox" name="boxh2" />h2 <br />
-			<input type="checkbox" name="boxbody" />Body <br />
+			<input type="checkbox" name="boxtitle" title="Title verisi dahil edilsin mi?" />Title <br/>
+			<input type="checkbox" name="boxh1" title="h1 verisi dahil edilsin mi?"/>h1 <br />
+			<input type="checkbox" name="boxh2" title="h2 verisi dahil edilsin mi?"/>h2 <br />
+			<input type="checkbox" name="boxbody" title="Body verisi dahil edilsin mi?"/>Body <br />
 			</div>
             <div class="input submit">
                 <input type="submit" value="Gönder" />
