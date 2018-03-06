@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: cp1254 -*-
+
 import urllib.request
 import bs4 as bs
 import datetime
@@ -9,6 +12,7 @@ from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
 from openpyxl import Workbook
 import pynotify , os ,time
+import re
 from flask import Flask, render_template, flash, request
 from wtforms import Form, TextField, TextAreaField, validators, StringField, SubmitField
 
@@ -18,8 +22,7 @@ def calistir(ad, mail):
     while (1):
         for kaynak in range(1, 5):
 
-            print(kaynak)
-            print(type(kaynak))
+
             # webLink = 'https://ubersem.com/'
             # sendMail = 'tolga_k94@hotmail.com'
 
@@ -27,6 +30,15 @@ def calistir(ad, mail):
             sendMail = mail
             sauce = urllib.request.urlopen(webLink.strip()).read()
             soup = bs.BeautifulSoup(sauce, 'lxml')
+
+            regex = '<div>(.+?)</div>'
+            comp = re.compile(regex)
+            htmlkod = urllib.request.urlopen(ad).read().decode('utf-8')
+            titles = re.findall(comp, htmlkod)
+            say=1
+            for title in titles:
+                print(str(say), title)
+                say+=1
 
             try:
                 if request.form.get('boxtitle'):
@@ -43,7 +55,7 @@ def calistir(ad, mail):
                     bodytext = bodydata.text
 
             except:
-                print("Bu URL, girilen datalara ulaÅŸÄ±lmasÄ±na izin vermiyor.")
+                print("Bu URL, girilen datalara ulaşılmasına izin vermiyor.")
             global dataAdi, data
             if request.form.get('boxtitle'):
                 if (kaynak == 1):
@@ -68,10 +80,10 @@ def calistir(ad, mail):
 
             def degisiklik(Ci_Verisi):
                 if (Ci_Verisi == data):
-                    print('DeÄŸiÅŸiklik yoktur')
+                    print('Değişiklik yoktur')
 
                 else:
-                    textPD = "Veri deÄŸiÅŸikliÄŸi algÄ±landÄ±"
+                    textPD = "Veri değişikliği algılandı"
                     sayfa.append({'C': data, 'A': datetime.datetime.now(), 'I': webLink})
 
                     text1_lines = data.splitlines()
@@ -88,7 +100,7 @@ def calistir(ad, mail):
 
             def mailGonder(text):
 
-                recipients = [sendMail]  # deÄŸiÅŸim varsa mail gÃ¶nder
+                recipients = [sendMail]  # değişim varsa mail gönder
                 emaillist = [elem.strip().split(',') for elem in recipients]
 
                 msg = MIMEMultipart()
@@ -111,27 +123,27 @@ def calistir(ad, mail):
 
                 server.sendmail(msg['From'], emaillist, msg.as_string())
 
-                print("Mail gÃ¶nderilmiÅŸtir")
+                print("Mail gönderilmiştir")
 
-            try:  # kayÄ±tlÄ± data varsa Ã§ek
+            try:  # kayıtlı data varsa çek
                 kitap = openpyxl.load_workbook(file)
                 sayfa = kitap.worksheets[0]
 
-            except IOError as e:  # kayÄ±tlÄ± data yoksa oluÅŸtur
+            except IOError as e:  # kayıtlı data yoksa oluştur
                 kitap = Workbook()
                 sayfa = kitap.active
                 kitap.save(file)
 
-            C1_verisi = sayfa['C1'].value  # baÅŸlangÄ±Ã§ verisi
-            Z1_verisi = sayfa['Z1'].value  # son veri yedeÄŸi
+            C1_verisi = sayfa['C1'].value  # başlangıç verisi
+            Z1_verisi = sayfa['Z1'].value  # son veri yedeği
 
-            if (C1_verisi == None or Z1_verisi == None):  # sÃ¼tunlar boÅŸsa baÅŸlangÄ±Ã§ verilerini ekle
+            if (C1_verisi == None or Z1_verisi == None):  # sütunlar boşsa başlangıç verilerini ekle
                 sayfa['C1'] = sayfa['Z1'] = str(data)
                 sayfa['A1'] = datetime.datetime.now()
                 sayfa['I1'] = webLink
-                textPI = "Veri dosyasÄ± oluÅŸturulmuÅŸ ve ilk veri iÅŸlenmiÅŸtir!"
+                textPI = "Veri dosyası oluşturulmuş ve ilk veri işlenmiştir!"
                 print(data)
-                print("Veri dosyasÄ± oluÅŸturulmuÅŸ ve ilk veri iÅŸlenmiÅŸtir!")
+                print("Veri dosyası oluşturulmuş ve ilk veri işlenmiştir!")
 
                 kitap.save(file)
                 kitap.close()
@@ -160,5 +172,5 @@ def calistir(ad, mail):
                             mailGonder(textPD)
                             break
 
-            print("\nGÃ¼ncel data: \n" + data)
-        time.sleep(20)
+            print("\nGüncel data: \n" + data)
+        time.sleep(10)

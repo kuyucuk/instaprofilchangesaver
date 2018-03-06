@@ -1,11 +1,23 @@
 ﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
     <head>
-        <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../../../favicon.ico">
+
+    <title>Giriş Ekranı</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../../../../dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="signin.css" rel="stylesheet">
     </head>
-    <body>
-        {% with messages = get_flashed_messages(with_categories=true) %}
+	
+	<body class="text-center">
+	{% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 <ul>
                     {% for message in messages %}
@@ -17,21 +29,27 @@
         <form action="" method="post">
             {{ form.csrf }}
  
-            <div class="input text">
+    <form class="form-signin">
+      <img class="mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+      <h1 class="h3 mb-3 font-weight-normal">Lütfen seçimlerininizi yapın</h1>
+      
+	  <div class="input text">
                 {{ form.name.label }} {{ form.name }}
-            </div>
-			<div class="input email">
+      </div>
+	  <div class="input email"id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
                 {{ form.mail.label }} {{ form.mail }}
-            </div>
-			<div>
+      </div>
+      
+		<div>
 			<input type="checkbox" name="boxtitle" title="Title verisi dahil edilsin mi?" />Title <br/>
 			<input type="checkbox" name="boxh1" title="h1 verisi dahil edilsin mi?"/>h1 <br />
 			<input type="checkbox" name="boxh2" title="h2 verisi dahil edilsin mi?"/>h2 <br />
 			<input type="checkbox" name="boxbody" title="Body verisi dahil edilsin mi?"/>Body <br />
-			</div>
-            <div class="input submit">
-                <input type="submit" value="Gönder" />
-            </div>
-        </form>
-    </body>
+		</div>
+      
+		<div>
+				<button class="btn btn-lg btn-primary btn-block" type="submit" value="Gönder">Gönder</button>
+        </div>
+    </form>
+  </body>
 </html>
