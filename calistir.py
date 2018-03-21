@@ -81,6 +81,7 @@ def calistir(ad, mail):
             def degisiklik(Ci_Verisi):
                 if (Ci_Verisi == data):
                     print('Deðiþiklik yoktur')
+                    flash('Deðiþiklik yoktur')
 
                 else:
                     textPD = "Veri deðiþikliði algýlandý"

@@ -10,14 +10,22 @@
     <title>Giriş Ekranı</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="../../../../dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/styles/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="signin.css" rel="stylesheet">
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/signin.css') }}">
     </head>
 	
 	<body class="text-center">
-	{% with messages = get_flashed_messages(with_categories=true) %}
+	
+        <form action="" method="post">
+            {{ form.csrf }}
+ 
+    <form class="form-signin">
+      <img class="mb-4" src="https://ubersem.com/wp-content/uploads/2017/12/ubersem-signet-2.png" alt="" width="200" height="110">
+      <h1 class="h3 mb-3 font-weight-normal">Lütfen seçimlerininizi yapın</h1>
+      
+	  {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 <ul>
                     {% for message in messages %}
@@ -26,13 +34,7 @@
                 </ul>
             {% endif %}
         {% endwith %}
-        <form action="" method="post">
-            {{ form.csrf }}
- 
-    <form class="form-signin">
-      <img class="mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
-      <h1 class="h3 mb-3 font-weight-normal">Lütfen seçimlerininizi yapın</h1>
-      
+	  
 	  <div class="input text">
                 {{ form.name.label }} {{ form.name }}
       </div>

@@ -1,5 +1,6 @@
 from calistir import calistir
 from flask import Flask, render_template, flash, request
+from flask_bootstrap import Bootstrap
 from wtforms import Form, TextField, TextAreaField, validators, StringField, SubmitField
 import time
 
@@ -14,8 +15,13 @@ class ReusableForm(Form):
 
 @app.route("/", methods=['GET', 'POST'])
 
+
+
 def hello():
     form = ReusableForm(request.form)
+
+    #app = Flask(__name__)
+    #Bootstrap(app)
 
     print
     form.errors
@@ -29,6 +35,7 @@ def hello():
                 flash("En az bir seçim yapmak zorundasınız! ")
             else:
                 calistir(name, mail)
+                flash('Tarama tamamlandı')
         else:
             flash('Tüm formlar doldurulmalıdır! ')
 
