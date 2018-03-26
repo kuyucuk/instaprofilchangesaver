@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: cp1254 -*-
-
 import urllib.request
 import bs4 as bs
 import datetime
@@ -175,3 +174,7 @@ def calistir(ad, mail):
 
             print("\nGüncel data: \n" + data)
         time.sleep(10)
+
+
+
+

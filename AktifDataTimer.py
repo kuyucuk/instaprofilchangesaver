@@ -1,7 +1,9 @@
 from calistir import calistir
-from flask import Flask, render_template, flash, request
+from flask import Flask, render_template, flash, request, url_for, redirect, render_template, request, session, abort
 from flask_bootstrap import Bootstrap
 from wtforms import Form, TextField, TextAreaField, validators, StringField, SubmitField
+from os import path, environ
+import multiprocessing
 import time
 
 DEBUG = True
@@ -13,15 +15,41 @@ class ReusableForm(Form):
     name = TextField('Url:', validators=[validators.required()])
     mail = TextField("Email: ", validators=[validators.required()])
 
-@app.route("/", methods=['GET', 'POST'])
 
 
+
+
+
+@app.route('/')
+def home():
+    if not session.get('logged_in'):
+        return render_template('login.html')
+    else:
+       return redirect(url_for("hello"))
+
+@app.route('/login', methods=['POST'])
+def do_admin_login():
+    if request.form['password'] == 'sifre' and request.form['username'] == 'tolga':
+        session['logged_in'] = True
+
+    else:
+        flash('wrong password!')
+    return home()
+
+
+@app.route("/logout")
+def logout():
+    session['logged_in'] = False
+    return home()
+
+
+
+
+
+@app.route("/main", methods=['GET', 'POST'])
 
 def hello():
     form = ReusableForm(request.form)
-
-    #app = Flask(__name__)
-    #Bootstrap(app)
 
     print
     form.errors
@@ -36,15 +64,19 @@ def hello():
             else:
                 calistir(name, mail)
                 flash('Tarama tamamlandı')
+
+
         else:
             flash('Tüm formlar doldurulmalıdır! ')
 
-
-
     return render_template('hello.html', form=form)
 
+
+
 if __name__ == "__main__":
-    app.run()
+    port = int(environ.get("PORT", 5000))
+    app.run(host='127.0.0.3', port=port, debug=True)
+
 
 
 
