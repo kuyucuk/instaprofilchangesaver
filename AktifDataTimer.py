@@ -5,6 +5,13 @@ from wtforms import Form, TextField, TextAreaField, validators, StringField, Sub
 from os import path, environ
 import multiprocessing
 import time
+import os
+from sqlalchemy.orm import sessionmaker
+from tabledef import *
+
+engine = create_engine('sqlite:///login.db', echo=True)
+
+app = Flask(__name__)
 
 DEBUG = True
 app = Flask(__name__)
@@ -17,9 +24,6 @@ class ReusableForm(Form):
 
 
 
-
-
-
 @app.route('/')
 def home():
     if not session.get('logged_in'):
@@ -29,13 +33,24 @@ def home():
 
 @app.route('/login', methods=['POST'])
 def do_admin_login():
-    if request.form['password'] == 'sifre' and request.form['username'] == 'tolga':
+    """if request.form['password'] == 'sifre' and request.form['username'] == 'tolga':
         session['logged_in'] = True
 
     else:
         flash('wrong password!')
-    return home()
+    return home()"""
+    POST_USERNAME = str(request.form['username'])
+    POST_PASSWORD = str(request.form['password'])
 
+    Session = sessionmaker(bind=engine)
+    s = Session()
+    query = s.query(User).filter(User.username.in_([POST_USERNAME]), User.password.in_([POST_PASSWORD]))
+    result = query.first()
+    if result:
+        session['logged_in'] = True
+    else:
+        flash('wrong password!')
+    return home()
 
 @app.route("/logout")
 def logout():
@@ -44,31 +59,31 @@ def logout():
 
 
 
-
-
 @app.route("/main", methods=['GET', 'POST'])
 
 def hello():
-    form = ReusableForm(request.form)
+    if session.get('logged_in'): #giriş yapıldıysa aç sayfayı
 
-    print
-    form.errors
-    if request.method == 'POST':
-        name = request.form['name']
-        mail = request.form['mail']
+        form = ReusableForm(request.form)
+        print
+        form.errors
+        if request.method == 'POST':
+            name = request.form['name']
+            mail = request.form['mail']
 
-        if form.validate():
-            # Save the comment here.
-            if request.form.get('boxtitle') == request.form.get('boxh1') == request.form.get('boxh2')== request.form.get('boxbody') == None:
-                flash("En az bir seçim yapmak zorundasınız! ")
+            if form.validate():
+                # Save the comment here.
+                if request.form.get('boxtitle') == request.form.get('boxh1') == request.form.get('boxh2')== request.form.get('boxbody') == None:
+                    flash("En az bir seçim yapmak zorundasınız! ")
+                else:
+                    calistir(name, mail)
+                    flash('Tarama tamamlandı')
+
+
             else:
-                calistir(name, mail)
-                flash('Tarama tamamlandı')
-
-
-        else:
-            flash('Tüm formlar doldurulmalıdır! ')
-
+                flash('Tüm formlar doldurulmalıdır! ')
+    else:
+        return redirect(url_for("home"))
     return render_template('hello.html', form=form)
 
 
