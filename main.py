@@ -9,7 +9,7 @@ import os
 from sqlalchemy.orm import sessionmaker
 from tabledef import *
 
-engine = create_engine('sqlite:///login.db', echoK=True)
+engine = create_engine('sqlite:///login.db', echo=True)
 
 app = Flask(__name__)
 
@@ -21,9 +21,6 @@ app.config['SECRET_KEY'] = '7d441f27d441f27567d441f2b6176a'
 class ReusableForm(Form):
     name = TextField('Url:', validators=[validators.required()])
     mail = TextField("Email: ", validators=[validators.required()])
-
-
-
 
 
 
@@ -62,8 +59,6 @@ def logout():
 
 
 
-
-
 @app.route("/main", methods=['GET', 'POST'])
 
 def hello():
@@ -94,8 +89,7 @@ def hello():
 
 
 if __name__ == "__main__":
-    port = int(environ.get("PORT", 5000))
-    app.run(host='127.0.0.3', port=port, debug=True)
+    app.run()
 
 
 
