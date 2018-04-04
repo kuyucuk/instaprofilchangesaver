@@ -24,6 +24,7 @@ class ReusableForm(Form):
 
 
 
+
 @app.route('/')
 def home():
     if not session.get('logged_in'):
